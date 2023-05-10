@@ -1,0 +1,134 @@
+<!doctype html>
+
+<html lang="nl">
+<head>
+  <meta charset="utf-8">
+  <title>Friendlify</title>
+  <link rel="icon" href="{{ url_for('static', filename='files/logo.png') }}">
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='login/css/bootstrap.min.css') }}">
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='login/css/style.css') }}">
+  <!-- <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='login/css/ionicons.min.css') }}"> -->
+  <!-- <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='login/css/font-awesome.min.css') }}"> -->
+  
+  <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
+  <link rel="stylesheet" href="https://themified.com/friend-finder/css/emoji.css">
+  <!-- <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='login/css/emoji.css') }}"> -->
+  
+  <!--Google Font-->
+  <link href="https://fonts.googleapis.com/css?family=Lato:300,400,400i,700,700i" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+</head>
+<body>
+  <header id="header">
+    <nav class="navbar navbar-default navbar-fixed-top menu">
+      <div class="container">
+
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="">
+            <img src="{{ url_for('static', filename='files/logo.png') }}" class="profile-photo-xs" alt="logo" />
+            <!-- Friendlify -->
+          </a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+          <ul class="nav navbar-nav navbar-right main-menu">
+            <!-- <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Home <span><img src="https://themified.com/friend-finder/images/down-arrow.png" alt="" /></span></a>
+                <ul class="dropdown-menu newsfeed-home">
+                  <li><a href="index.html">Landing Page 1</a></li>
+                  <li><a href="index-register.html">Landing Page 2</a></li>
+                </ul>
+            </li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Newsfeed <span><img src="https://themified.com/friend-finder/images/down-arrow.png" alt="" /></span></a>
+                <ul class="dropdown-menu newsfeed-home">
+                  <li><a href="newsfeed.html">Newsfeed</a></li>
+                  <li><a href="newsfeed-people-nearby.html">Poeple Nearly</a></li>
+                  <li><a href="newsfeed-friends.html">My friends</a></li>
+                  <li><a href="newsfeed-messages.html">Chatroom</a></li>
+                  <li><a href="newsfeed-images.html">Images</a></li>
+                  <li><a href="newsfeed-videos.html">Videos</a></li>
+                </ul>
+            </li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Timeline <span><img src="https://themified.com/friend-finder/images/down-arrow.png" alt="" /></span></a>
+              <ul class="dropdown-menu login">
+                <li><a href="timeline.html">Timeline</a></li>
+                <li><a href="timeline-about.html">Timeline About</a></li>
+                <li><a href="timeline-album.html">Timeline Album</a></li>
+                <li><a href="timeline-friends.html">Timeline Friends</a></li>
+                <li><a href="edit-profile-basic.html">Edit: Basic Info</a></li>
+                <li><a href="edit-profile-work-edu.html">Edit: Work</a></li>
+                <li><a href="edit-profile-interests.html">Edit: Interests</a></li>
+                <li><a href="edit-profile-settings.html">Account Settings</a></li>
+                <li><a href="edit-profile-password.html">Change Password</a></li>
+              </ul>
+            </li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle pages" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">All Pages <span><img src="https://themified.com/friend-finder/images/down-arrow.png" alt="" /></span></a>
+              <ul class="dropdown-menu page-list">
+                <li><a href="index.html">Landing Page 1</a></li>
+                <li><a href="index-register.html">Landing Page 2</a></li>
+                <li><a href="newsfeed.html">Newsfeed</a></li>
+                <li><a href="newsfeed-people-nearby.html">Poeple Nearly</a></li>
+                <li><a href="newsfeed-friends.html">My friends</a></li>
+                <li><a href="newsfeed-messages.html">Chatroom</a></li>
+                <li><a href="newsfeed-images.html">Images</a></li>
+                <li><a href="newsfeed-videos.html">Videos</a></li>
+                <li><a href="timeline.html">Timeline</a></li>
+                <li><a href="timeline-about.html">Timeline About</a></li>
+                <li><a href="timeline-album.html">Timeline Album</a></li>
+                <li><a href="timeline-friends.html">Timeline Friends</a></li>
+                <li><a href="edit-profile-basic.html">Edit Profile</a></li>
+                <li><a href="contact.html">Contact Us</a></li>
+                <li><a href="faq.html">FAQ Page</a></li>
+                <li><a href="404.html">404 Not Found</a></li>
+              </ul>
+            </li> -->
+            <li class="dropdown">
+              <a href="messages.html"><span class="ion-ios-bell"></span></a>
+            </li>
+            <li class="dropdown">
+              <a href="contact.html"><span class="ion-ios-chatboxes"></span></a>
+            </li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="ion-android-settings"></span></a>
+                <ul class="dropdown-menu">
+                  <li><a href="#">My Account</a></li>
+                  <li><a href="{{ url_for('logout') }}">Logout</a></li>
+                </ul>
+            </li>
+          </ul>
+          <form class="navbar-form navbar-left hidden-sm">
+            <div class="form-group col-lg-offset-8 col-md-offset-7">
+              <i class="icon ion-android-search"></i>
+              <input type="text" class="form-control" placeholder="Search...">
+            </div>
+          </form>
+        </div><!-- /.navbar-collapse -->
+      </div><!-- /.container -->
+    </nav>
+  </header>
+  {% block content %}{% endblock content %}
+  
+  <!--preloader-->
+  <div id="spinner-wrapper">
+    <div class="spinner"></div>
+  </div>
+</body>
+<script src="{{ url_for('static', filename='login/js/jquery-3.1.1.min.js') }}"></script>
+<script src="{{ url_for('static', filename='login/js/bootstrap.min.js') }}"></script>
+<!-- <script src="{{ url_for('static', filename='login/js/jquery.appear.min.js') }}"></script> -->
+<script src="{{ url_for('static', filename='login/js/jquery.sticky-kit.min.js') }}"></script>
+<script src="{{ url_for('static', filename='login/js/jquery.scrollbar.min.js') }}"></script>
+<script src="{{ url_for('static', filename='login/js/script.js') }}"></script>
+</html>

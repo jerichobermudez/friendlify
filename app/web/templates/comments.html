@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Realtime Comments</title>
+  </head>
+  <body>
+    <h1>Realtime Comments</h1>
+    <div id="comment-container"></div>
+    <form onsubmit="submitComment(event)">
+      <input type="text" name="comment" placeholder="Enter your comment">
+      <button type="submit">Submit</button>
+    </form>
+    
+    <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/4.3.2/socket.io.min.js"></script>
+    <script>
+      var socket = io();
+      
+      socket.on('connect', function() {
+        console.log('Connected to server');
+      });
+      
+      socket.on('new_comment', function(comment) {
+        var commentElement = document.createElement('div');
+        commentElement.innerHTML = comment;
+        document.getElementById('comment-container').appendChild(commentElement);
+      });
+      
+      function submitComment(event) {
+        event.preventDefault();
+        var commentInput = document.getElementsByName('comment')[0];
+        var comment = commentInput.value;
+        socket.emit('new_comment', comment);
+        commentInput.value = '';
+      }
+    </script>
+  </body>
+</html>

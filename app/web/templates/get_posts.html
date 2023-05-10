@@ -1,0 +1,54 @@
+{% for post in posts %}
+  <div class="post-content">
+    <div class="post-container">
+      <img src="{{ url_for('static', filename='files/'~ post.user.username ~ '/' ~ post.user.image) }}" alt="{{ post.user.image }}" class="profile-photo-md pull-left" />
+      <div class="post-detail">
+        <div class="user-info">
+          <h5>
+            <a href="{{ post.user.username }}" class="profile-link">{{ post.user.firstname ~ ' ' ~ post.user.lastname }}</a>
+            <!-- <span class="following">following</span> -->
+          </h5>
+          <!-- <p class="text-muted">Updated her status about 33 mins ago</p> -->
+        </div>
+        <div class="reaction">
+          <a class="btn text-green"><i class="icon ion-thumbsup"></i> 0</a>
+          <a class="btn text-red"><i class="fa fa-thumbs-down"></i> 0</a>
+        </div>
+        <div class="line-divider"></div>
+        <div class="post-text">
+          <!-- <p> {{ post.content.replace('\n', '<br>') }} </p> -->
+          <pre style="font-family: 'Lato', sans-serif; padding: 0; border: none; background: none;">{{ post.content|escape }}</pre>
+        </div>
+        <div class="line-divider"></div>
+        <div class="post-comment-lists-{{ post.id }}">
+          {% for comment in post.comments %}
+            <div class="post-comment">
+              <img src="{{ url_for('static', filename='files/'~ comment.user.username ~ '/' ~ comment.user.image) }}" alt="{{ post.user.image }}" class="profile-photo-sm" />
+              <p>
+                <a href="{{ comment.user.username }}" class="profile-link">{{ comment.user.firstname }}</a>
+                {{ comment.comment }}
+              </p>
+            </div>
+          {% endfor %}
+          <!-- {{ post.comments|length }} <a href>More</a> -->
+        </div>
+        <div class="post-comment">
+          <img src="{{ url_for('static', filename='files/'~ user.username ~ '/' ~ user.image) }}" alt="" class="profile-photo-sm" />
+          <form class="comment-form" id="comment-form" data-id="{{ post.id }}">
+            <input type="text" class="form-control" id="comment-input-{{ post.id }}" data-id="{{ post.id }}" oninput="startTyping({{ post.id }})" onblur="stopTyping({{ post.id }})"  placeholder="Write a comment...">
+            <p id="typing-status-{{ post.id }}"></p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endfor %}
+<script>
+  $('.comment-form').submit(function(event) {
+    event.preventDefault();
+    var postId = $(this).data('id');
+    var comment = $('#comment-input-' + postId).val();
+    socket.emit('new_comment', {'comment': comment, 'post_id': postId});
+    $('#comment-input-' + postId).val('');
+  });
+</script>

@@ -1,0 +1,19 @@
+FROM python:latest
+
+RUN apt-get update
+RUN apt-get -y upgrade
+
+RUN pip install --upgrade pip
+RUN pip install PyMySQL
+RUN pip install flask
+RUN pip install Flask-RESTful
+RUN pip install flask-sqlalchemy
+RUN pip install flask-socketio
+RUN pip install markupsafe
+RUN pip install flask-wtf
+RUN pip install email-validator
+RUN pip install Flask-Mail
+
+WORKDIR /friendlify
+
+CMD ["python", "app.py"]

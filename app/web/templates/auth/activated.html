@@ -1,0 +1,35 @@
+{% extends "login_layout.html" %}
+{% block content %}
+  <div id="lp-register">
+    <div class="container wrapper">
+      <div class="row">
+        <div class="col-sm-5">
+          <div class="intro-texts">
+            <h1 class="text-white">Friendlify</h1>
+          </div>
+        </div>
+        <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-1 text-center">
+          <div class="reg-form-container">
+            <!-- Register/Login Tabs-->
+            <div class="reg-options">
+              <ul class="nav nav-tabs">
+                <li><a href="{{ url_for('register') }}">Register</a></li>
+                <li><a href="{{ url_for('login') }}">Login</a></li>
+              </ul><!--Tabs End-->
+            </div>
+            
+            <!--Registration Form Contents-->
+            <div class="tab-content" style="padding-top: 30px;">
+              <!--Login-->
+              <div class="tab-pane active">
+                <h2>Activation Success</h2>
+                <p class="text-muted">You may now login to your account</p>
+                <p>Click <a href="{{ url_for('login') }}">here</a> to login your account.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock content %}

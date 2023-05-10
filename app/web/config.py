@@ -1,0 +1,17 @@
+SECRET_KEY='e902cda572db9f0c006f36777395977d'
+TOKEN='myfriendlytoken'
+DB_HOST='mysqldb'
+DB_PORT='3306'
+DB_DATABASE='friendlify'
+DB_USERNAME='user'
+DB_PASSWORD='password'
+COMMON_PASSWORDS=[
+    'Pa$$w0rd',
+    'p@ssw0rd',
+    'p@ssword',
+    '11223344',
+    'password',
+    '123456',
+    'qwerty'
+]
+ACTIVATION_EXPIRATION=3600

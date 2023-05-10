@@ -1,0 +1,231 @@
+
+{% extends "layout/home.html" %}
+{% block content %}
+  <div id="page-contents">
+    <div class="container">
+      <div class="row">
+        <!-- Newsfeed Common Side Bar Left
+        ================================================= -->
+        <div class="col-md-3 static">
+          <div class="profile-card bg-custom-color">
+            <img src="{{ url_for('static', filename='files/'~ user.username ~ '/' ~ user.image) }}" alt="user" class="profile-photo" />
+            <h5><a href="profile" class="text-white">
+              {{ user.firstname }} {{ user.lastname }}
+            </a></h5>
+            <a href="#" class="text-white"><i class="ion ion-android-person-add"></i> 1,299 followers</a>
+          </div><!--profile card ends-->
+          <ul class="nav-news-feed">
+            <li><i class="icon ion-ios-paper"></i><div><a href="#">My Newsfeed</a></div></li>
+            <li><i class="icon ion-ios-people"></i><div><a href="#">People Nearby</a></div></li>
+            <li><i class="icon ion-ios-people-outline"></i><div><a href="#">Friends</a></div></li>
+            <li><i class="icon ion-chatboxes"></i><div><a href="#">Messages</a></div></li>
+            <li><i class="icon ion-images"></i><div><a href="#">Images</a></div></li>
+            <li><i class="icon ion-ios-videocam"></i><div><a href="#">Videos</a></div></li>
+          </ul><!--news-feed links ends-->
+          <div id="chat-block">
+            <div class="title bg-custom-color">Chat online</div>
+            <ul class="online-users list-inline">
+              <li><a href="#" title="Linda Lohan"><img src="https://themified.com/friend-finder/images/users/user-2.jpg" alt="user" class="img-responsive profile-photo" /><span class="online-dot"></span></a></li>
+              <li><a href="#" title="Sophia Santayana"><img src="https://themified.com/friend-finder/images/users/user-3.jpg" alt="user" class="img-responsive profile-photo" /><span class="online-dot"></span></a></li>
+              <li><a href="#" title="John Doe"><img src="https://themified.com/friend-finder/images/users/user-4.jpg" alt="user" class="img-responsive profile-photo" /><span class="online-dot"></span></a></li>
+              <li><a href="#" title="Alexis Clark"><img src="https://themified.com/friend-finder/images/users/user-5.jpg" alt="user" class="img-responsive profile-photo" /><span class="online-dot"></span></a></li>
+              <li><a href="#" title="James Carter"><img src="https://themified.com/friend-finder/images/users/user-6.jpg" alt="user" class="img-responsive profile-photo" /><span class="online-dot"></span></a></li>
+              <li><a href="#" title="Robert Cook"><img src="https://themified.com/friend-finder/images/users/user-7.jpg" alt="user" class="img-responsive profile-photo" /><span class="online-dot"></span></a></li>
+              <li><a href="#" title="Richard Bell"><img src="https://themified.com/friend-finder/images/users/user-8.jpg" alt="user" class="img-responsive profile-photo" /><span class="online-dot"></span></a></li>
+              <li><a href="#" title="Anna Young"><img src="https://themified.com/friend-finder/images/users/user-9.jpg" alt="user" class="img-responsive profile-photo" /><span class="online-dot"></span></a></li>
+              <li><a href="#" title="Julia Cox"><img src="https://themified.com/friend-finder/images/users/user-10.jpg" alt="user" class="img-responsive profile-photo" /><span class="online-dot"></span></a></li>
+            </ul>
+          </div><!--chat block ends-->
+        </div>
+        <div class="col-md-7">
+          <!-- Post Create Box
+          ================================================= -->
+          <div class="create-post">
+            <div class="row">
+              <form class="post-form" id="post-form">
+                <div class="col-md-7 col-sm-7">
+                  <div class="form-group">
+                    <img src="{{ url_for('static', filename='files/'~ user.username ~ '/' ~ user.image) }}" alt="" class="profile-photo-md" />
+                    <textarea name="texts" id="post-content" cols="30" rows="1" class="form-control" placeholder="What's on your mind?"></textarea>
+                  </div>
+                </div>
+                <div class="col-md-5 col-sm-5">
+                  <div class="tools">
+                    <ul class="publishing-tools list-inline">
+                      <li><a href="#"><i class="ion-compose"></i></a></li>
+                      <li><a href="#"><i class="ion-images"></i></a></li>
+                      <li><a href="#"><i class="ion-ios-videocam"></i></a></li>
+                      <li><a href="#"><i class="ion-map"></i></a></li>
+                    </ul>
+                    <button type="submit" class="btn btn-primary btn-xs pull-right bg-custom-color">Publish</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div><!-- Post Create Box End-->
+
+          <div id="loading-status" class="text-center" style="position: absolute; left: 45%; margin-top: -30px; display: none; z-index: 9999;">
+            <img src="{{ url_for('static', filename='files/loading.svg') }}" width="50px" /> 
+          </div>
+          <div class="post-lists"></div>
+        </div>
+
+        <!-- Newsfeed Common Side Bar Right
+        ================================================= -->
+        <div class="col-md-2 static">
+          <div class="suggestions" id="sticky-sidebar">
+            <h4 class="grey">Want to Follow?</h4>
+            <div class="follow-user">
+              <img src="https://themified.com/friend-finder/images/users/user-11.jpg" alt="" class="profile-photo-sm pull-left" />
+              <div>
+                <h5><a href="timeline.html">Diana Amber</a></h5>
+                <a href="#" class="text-grey text-custom-color font-weight-600">Add friend</a>
+              </div>
+            </div>
+            <div class="follow-user">
+              <img src="https://themified.com/friend-finder/images/users/user-12.jpg" alt="" class="profile-photo-sm pull-left" />
+              <div>
+                <h5><a href="timeline.html">Cris Haris</a></h5>
+                <a href="#" class="text-grey text-custom-color font-weight-600">Add friend</a>
+              </div>
+            </div>
+            <div class="follow-user">
+              <img src="https://themified.com/friend-finder/images/users/user-13.jpg" alt="" class="profile-photo-sm pull-left" />
+              <div>
+                <h5><a href="timeline.html">Brian Walton</a></h5>
+                <a href="#" class="text-grey text-custom-color font-weight-600">Add friend</a>
+              </div>
+            </div>
+            <div class="follow-user">
+              <img src="https://themified.com/friend-finder/images/users/user-14.jpg" alt="" class="profile-photo-sm pull-left" />
+              <div>
+                <h5><a href="timeline.html">Olivia Steward</a></h5>
+                <a href="#" class="text-grey text-custom-color font-weight-600">Add friend</a>
+              </div>
+            </div>
+            <div class="follow-user">
+              <img src="https://themified.com/friend-finder/images/users/user-15.jpg" alt="" class="profile-photo-sm pull-left" />
+              <div>
+                <h5><a href="timeline.html">Sophia Page</a></h5>
+                <a href="#" class="text-grey text-custom-color font-weight-600">Add friend</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+  <script src="https://cdn.socket.io/4.6.0/socket.io.min.js" integrity="sha384-c79GN5VsunZvi+Q/WObgk2in0CbZsHnjEqvFxC5DxHn9lTfNce2WW6h2pH6u/kF+" crossorigin="anonymous"></script>
+  <script>
+    var typing = false;
+    var timeout = undefined;
+    var userId = "{{ session['id'] }}";
+    var currentPage = 1;
+    var lastPage = null;
+  
+    var socket = io.connect('http://' + document.domain + ':' + location.port);
+    get_posts();
+
+    $(window).scroll(function() {
+      if ($(window).scrollTop() + $(window).height() >= $(document).height()) {
+        if (lastPage != 0) { 
+          $('.post-lists').append(
+            '<div class="post-content post-loader text-center">'+
+              '<img src="{{ url_for("static", filename="files/loading.svg") }}" width="50px" />'+
+            '</div>'
+          );
+          get_posts();
+        }
+      }
+    });
+
+    function get_posts(page = currentPage) {
+      currentPage = page;
+      $.ajax({
+        url: '/get-posts/' + page,
+        type: 'GET',
+        success: function(response) {
+          var htmlContent = response.html;
+          lastPage = response.last_page;
+
+          if (response.has_more && response.lastPage != 0) {
+            currentPage++;
+            $('.post-lists').append(htmlContent);
+            if (response.last_page == 0) {
+              var newDiv = $('<div class="post-content text-center"> No more posts to show. </div>');
+              $('.post-lists').append(newDiv);
+              newDiv.fadeIn('slow');
+            }
+          } 
+          $('#loading-status').fadeOut('slow');
+        },
+        complete: function(){
+          $('.post-loader').fadeOut('slow');
+        },
+        error: function(error) {
+          console.log(error);
+        }
+      });
+    }
+
+    $('.post-form').submit(function(event) {
+      event.preventDefault();
+      var postContent = $('#post-content').val();
+      if (postContent != '') {
+        currentPage = 1;
+        $('#loading-status').show();
+        socket.emit('new_post', {'content': postContent});
+        $('#post-content').val('');
+      }
+    });
+
+    socket.on('new_post', function(data) {
+      if (data.content == '') {
+        // alert('Please write a post');
+      } else {
+        $('.post-lists').empty();
+        get_posts(1);
+      }
+    });
+
+    // COMMENT FUNCTIONS
+    function startTyping(postId) {
+      var comment = $('#comment-input-' + postId).val();
+      socket.emit('typing', {'user_id': userId, 'comment': comment, 'post_id': postId});
+    }
+
+    function stopTyping(postId) {
+      socket.emit('stop_typing', {'user_id': userId, 'comment': '', 'post_id': postId});
+    }
+    
+    socket.on('typing_status', function(data) {
+      var dataUserId = data.user_id;
+      var postId = data.post_id;
+      var userName = data.name;
+      var comment = data.comment;
+      var typing = data.typing;
+      if (typing && comment != '') {
+        if (userId != dataUserId) {
+          $('#typing-status-' + postId).html('<i>' + userName + ' is typing...</i>');
+        }
+      } else {
+        if (userId != dataUserId) {
+          $('#typing-status-' + postId).html('');
+        }
+      }
+    });
+
+    socket.on('new_comment', function(data) {
+      var newComment = $(
+        '<div class="post-comment">' +
+          '<img src="' + data.profile + '" class="profile-photo-sm" />' +
+          '<p><a href="" class="profile-link">' + data.firstname + '</a> ' + data.comment + '</p>' +
+        '</div>'
+      );
+      
+      $('.post-comment-lists-' + data.post_id).append(newComment);
+      newComment.hide().fadeIn('slow');
+    });
+  </script>
+{% endblock content %}

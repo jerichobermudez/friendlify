@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Real-Time Comment System</title>
+    <!-- <script src="//code.jquery.com/jquery-1.12.4.min.js"></script> -->
+    <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+    <!-- <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.1/socket.io.js"></script> -->
+    <script src="https://cdn.socket.io/4.6.0/socket.io.min.js" integrity="sha384-c79GN5VsunZvi+Q/WObgk2in0CbZsHnjEqvFxC5DxHn9lTfNce2WW6h2pH6u/kF+" crossorigin="anonymous"></script>
+  </head>
+  <body>
+    <!-- <h1>Real-Time Comment System</h1> -->
+    Hi! I'm {{ session['username'] }}
+    <ol id="comment-list">
+      {% for comment in comments %}
+        <li>{{ comment.comment }}</li>
+        {% endfor %}
+    </ol>
+    <p id="typing-status"></p>
+    <form id="comment-form">
+      <input type="text" id="comment-input" oninput="startTyping()" onblur="stopTyping()" placeholder="Enter your comment">
+      <button type="submit">Submit</button>
+    </form>
+    <script type="text/javascript">
+      var typing = false;
+      var timeout = undefined;
+      var userId = "{{ session['id'] }}";
+
+      // var username = prompt('Please enter your username');
+
+      var socket = io.connect('http://' + document.domain + ':' + location.port);
+
+      socket.on('connect', function() {
+        console.log('Connected to server');
+        // socket.emit('user_connected', username);
+      });
+
+      socket.on('new_comment', function(comment) {
+        $('#comment-list').append('<li>' + comment + '</li>');
+      });
+
+      // $('#comment-input').on('input', function() {
+        // clearTimeout(timeout);
+        // if (!typing) {
+        //   typing = true;
+        //   socket.emit('user_typing', true);
+        // }
+
+        // timeout = setTimeout(function() {
+        //   typing = false;
+        //   socket.emit('user_typing', false);
+        // }, 1000);
+        // socket.emit('user_typing', { 'username': username, 'typing': true }); // Send the username and typing status to the server
+      // });
+
+      // socket.on('user_typing', function(typing) {
+      //   // if (typing) {
+      //   //   $('#typing-status').text('Someone is typing...');
+      //   // } else {
+      //   //   $('#typing-status').text('');
+      //   // }
+      //   var typingUsername = data.username;
+      //   var typingStatus = data.typing;
+
+      //   if (typingStatus && typingUsername !== username) {
+      //     $('#typing-status').text(typingUsername + ' is typing...');
+      //   } else {
+      //     $('#typing-status').text('');
+      //   }
+      // });
+
+    function startTyping() {
+      var comment = $('#comment-input').val();
+      socket.emit('typing', {'user_id': userId, 'comment': comment});
+    }
+
+    function stopTyping() {
+      socket.emit('stop_typing', {'user_id': userId});
+    }
+
+    socket.on('typing_status', function(data) {
+      var dataUserId = data.user_id;
+      var userName = data.name;
+      var comment = data.comment;
+      console.log(comment);
+      var typing = data.typing;
+      if (typing && comment != '') {
+        // Display typing status for the user
+        if (userId != dataUserId) {
+          $('#typing-status').html('<i>' + userName + ' is typing...</i>');
+        }
+      } else {
+        if (userId != dataUserId) {
+        // Remove typing status when user stops typing
+          $('#typing-status').text('');
+        }
+      }
+    });
+
+      $('#comment-form').submit(function(event) {
+        event.preventDefault();
+        
+        var comment = $('#comment-input').val();
+        console.log(comment);
+        socket.emit('new_comment', comment);
+        $('#comment-input').val('');
+      });
+    </script>
+  </body>
+</html>

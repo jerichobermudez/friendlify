@@ -1,0 +1,60 @@
+{% extends "layout/login.html" %}
+{% block content %}
+  <div id="lp-register">
+    <div class="container wrapper">
+      <div class="row">
+        <div class="col-sm-5">
+          <div class="intro-texts">
+            <h1 class="text-white">Friendlify</h1>
+          </div>
+        </div>
+        <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-1">
+          <div class="reg-form-container"> 
+          
+            <!-- Register/Login Tabs-->
+            <div class="reg-options">
+              <ul class="nav nav-tabs">
+                <li><a href="{{ url_for('register') }}">Register</a></li>
+                <li class="active"><a href="#login">Login</a></li>
+              </ul><!--Tabs End-->
+            </div>
+            
+            <!--Registration Form Contents-->
+            <div class="tab-content">
+              <!--Login-->
+              <div class="tab-pane active" id="login">
+                <h3>Login</h3>
+                <p class="text-muted">Log into your account</p>
+                {% with message = get_flashed_messages(with_categories=True)[0] if get_flashed_messages() else None %}
+                  {% if message %}
+                    <div class="alert alert-{% if message[0] == 'success' %}success{% else %}danger{% endif %} alert-dismissible" role="alert">
+                      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                      </button>
+                      <div class="alert-message">{{ message[1] }}</div>
+                    </div>
+                  {% endif %}
+                {% endwith %}
+                <!--Login Form-->
+                <form action="{{ url_for('login') }}" method="post" id='Login_form'>
+                   <div class="row">
+                    <div class="form-group col-xs-12">
+                      <input id="username" class="form-control input-group-lg" type="text" name="username" placeholder="Username"/>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="form-group col-xs-12">
+                      <input id="password" class="form-control input-group-lg" type="password" name="password" placeholder="Password"/>
+                    </div>
+                  </div>
+                  <button type="submit" class="btn btn-primary">Login Now</button>
+                </form><!--Login Form Ends--> 
+                <p><a href="#">Forgot Password?</a></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock content %}

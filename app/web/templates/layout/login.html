@@ -1,0 +1,42 @@
+<!doctype html>
+
+<html lang="nl">
+<head>
+  <meta charset="utf-8">
+  <title>Friendlify</title>
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='login/css/bootstrap.min.css') }}">
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='login/css/style.css') }}">
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='login/css/ionicons.min.css') }}">
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='login/css/font-awesome.min.css') }}">
+  
+  <!--Google Font-->
+  <link href="https://fonts.googleapis.com/css?family=Lato:300,400,400i,700,700i" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+</head>
+<body>
+  <header id="header-inverse">
+    <nav class="navbar navbar-default navbar-fixed-top menu">
+      <div class="container">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+          <a class="navbar-brand" href="{{ url_for('home') }}">
+            <!-- <img src="images/logo.png" alt="logo" /> -->
+            Friendlify
+          </a>
+        </div>
+        
+      </div><!-- /.container -->
+    </nav>
+  </header>
+  {% block content %}{% endblock content %}
+  
+  <!--preloader-->
+  <div id="spinner-wrapper">
+    <div class="spinner"></div>
+  </div>
+</body>
+<script src="{{ url_for('static', filename='login/js/jquery-3.1.1.min.js') }}"></script>
+<script src="{{ url_for('static', filename='login/js/bootstrap.min.js') }}"></script>
+<!-- <script src="{{ url_for('static', filename='login/js/jquery.appear.min.js') }}"></script> -->
+<script src="{{ url_for('static', filename='login/js/script.js') }}"></script>
+</html>
