@@ -2,6 +2,8 @@
 **/*.pyc/
 *.pyc
 docker-compose.yml
-web/config.py
+/app/web/config.py
+/app/web/static/files
+/app/web/static/files/*
 web/static/files
 web/static/files/*
