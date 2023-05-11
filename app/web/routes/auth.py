@@ -1,10 +1,10 @@
 import os
-import secrets
+# import secrets
 import shutil
 from config import ACTIVATION_EXPIRATION, SECRET_KEY, TOKEN
 from database import db
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired, BadSignature
-from flask import Flask, render_template, request, flash, session, redirect, url_for, jsonify
+from flask import render_template, request, flash, session, redirect, url_for
 from forms.registration import RegistrationForm
 from models.user import User
 from components.mail_helper import send_activation_email

@@ -48,7 +48,9 @@
     event.preventDefault();
     var postId = $(this).data('id');
     var comment = $('#comment-input-' + postId).val();
-    socket.emit('new_comment', {'comment': comment, 'post_id': postId});
-    $('#comment-input-' + postId).val('');
+    if (comment != '') {
+      socket.emit('new_comment', {'comment': comment, 'post_id': postId});
+      $('#comment-input-' + postId).val('');
+    }
   });
 </script>
