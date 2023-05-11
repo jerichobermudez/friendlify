@@ -64,7 +64,7 @@ def handle_new_post(data):
         data['lastname'] = user.lastname
         data['profile'] = url_for('static', filename='files/' + user.username + '/' + user.image)
 
-    emit('new_post', data, broadcast=True)
+        emit('new_post', data, broadcast=True)
 
 # Submit Comment
 def handle_new_comment(data):

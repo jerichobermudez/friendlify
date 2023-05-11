@@ -8,8 +8,6 @@ from mail_config import mail
 from routes.auth import login, register, activate, logout
 from routes.home import home, get_post, handle_new_post, handle_new_comment, on_typing
 
-from serializers import AlchemyEncoder
-
 app = Flask(__name__)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = f"mysql+pymysql://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_DATABASE}"
