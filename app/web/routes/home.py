@@ -105,8 +105,7 @@ def handle_new_comment(data):
         user = User.query.filter_by(id=new_comment.user_id).first()
         data['user_id'] = user.id
         data['username'] = user.username
-        data['firstname'] = user.firstname
-        data['display_name'] = user.display_name
+        data['display_name'] = user.display_name if user.display_name else user.firstname + ' ' + user.lastname
         data['profile'] = url_for('static', filename='files/' + user.username + '/' + user.image)
 
         emit('new_comment', data, broadcast=True)
@@ -116,35 +115,38 @@ def handle_new_comment(data):
 typing_users = {}
 # On Typing - Comment
 def on_typing(data):
-    users = []
     user_id = data['user_id']
     postId = data['post_id']
+
     user = User.query.filter_by(id=user_id).first()
-    # loggedinuser = User.query.filter_by(id=session['id']).first()
+    display_name=user.display_name if user.display_name else user.firstname
+
     comment = Comment.query.filter_by(user_id=user_id).first()
     comment.typing = True
     db.session.commit()
 
     # Store the users typing status
     if postId in typing_users:
-        typing_users[postId].add(user.firstname)
+        typing_users[postId].add(display_name)
     else:
-        typing_users[postId] = {user.firstname}
+        typing_users[postId] = {display_name}
 
-    emit('typing_status', {'user_id': user_id, 'name': user.firstname, 'users': list(typing_users[postId]), 'comment': data['comment'], 'post_id': postId, 'typing': True}, broadcast=True)
+    emit('typing_status', {'user_id': user_id, 'name': display_name, 'users': list(typing_users[postId]), 'comment': data['comment'], 'post_id': postId, 'typing': True}, broadcast=True)
 
 # Stop Typing - Comment
 def on_stop_typing(data):
     user_id = data['user_id']
     postId = data['post_id']
     user = User.query.filter_by(id=user_id).first()
+    display_name=user.display_name if user.display_name else user.firstname
+
     comment = Comment.query.filter_by(user_id=user_id).first()
     comment.typing = False
     db.session.commit()
 
     if data['comment'] == '':
     # Remove the user's typing status from the dictionary
-        if postId in typing_users and user.firstname in typing_users[postId]:
-            typing_users[postId].remove(user.firstname)
+        if postId in typing_users and display_name in typing_users[postId]:
+            typing_users[postId].remove(display_name)
 
-    emit('typing_status', {'user_id': user_id, 'name': user.firstname, 'users': list(typing_users[postId]), 'comment': data['comment'], 'post_id': postId, 'typing': False}, broadcast=True)
+    emit('typing_status', {'user_id': user_id, 'name': display_name, 'users': list(typing_users[postId]), 'comment': data['comment'], 'post_id': postId, 'typing': False}, broadcast=True)

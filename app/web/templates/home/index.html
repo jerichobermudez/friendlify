@@ -16,7 +16,7 @@
                 <div class="col-md-7 col-sm-7">
                   <div class="form-group">
                     <img src="{{ url_for('static', filename='files/'~ user.username ~ '/' ~ user.image) }}" alt="" class="profile-photo-md" />
-                    <textarea name="texts" id="post-content" cols="30" rows="1" class="form-control" placeholder="What's on your mind, {{ user.firstname }}?"></textarea>
+                    <textarea name="texts" id="post-content" cols="30" rows="1" class="form-control" placeholder="What's on your mind, {{ user.display_name if user.display_name else user.firstname }}?"></textarea>
                   </div>
                 </div>
                 <div class="col-md-5 col-sm-5">
@@ -91,7 +91,7 @@
     var typing = false;
     var timeout = undefined;
     var userId = "{{ session['id'] }}";
-    var userFirstname = '{{ user.firstname }}';
+    var userDisplayName = '{{ user.display_name if user.display_name else user.firstname }}';
     var currentPage = 1;
     var nextPageComment = {};
     var lastPage = null;
@@ -221,12 +221,12 @@
     // Function for check user typing
     function startTyping(postId) {
       var comment = $('#comment-input-' + postId).val();
-      socket.emit('typing', {'user_id': userId, 'comment': comment, 'firstname': userFirstname, 'post_id': postId});
+      socket.emit('typing', {'user_id': userId, 'comment': comment, 'firstname': userDisplayName, 'post_id': postId});
     }
 
     // Function for check user stop typing
     function stopTyping(postId) {
-      socket.emit('stop_typing', {'user_id': userId, 'comment': '', 'firstname': userFirstname, 'post_id': postId});
+      socket.emit('stop_typing', {'user_id': userId, 'comment': '', 'firstname': userDisplayName, 'post_id': postId});
     }
 
     // Check user typing status
@@ -239,7 +239,7 @@
       var typingUsers = data.users;
       if (typingUsers !== undefined) {
         typingUsers = typingUsers.filter(function(item) {
-          return item !== userFirstname;
+          return item !== userDisplayName;
         });
         if (typing || typingUsers.length > 0) {
           if (userId != dataUserId) {
