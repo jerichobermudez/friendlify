@@ -65,11 +65,11 @@ def register():
             html = render_template('mail/activation.html', link=activation_link)
             # mail.send_message(
             send_activation_email(
-                subject='Account Activation',
-                body='',
-                sender='admin@friendlify.com',
-                recipients=[form.email.data],
-                html=html
+                'Account Activation',
+                '',
+                'admin@friendlify.com',
+                [form.email.data],
+                html
             )
 
             flash('Registration success!', 'success')
