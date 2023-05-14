@@ -13,6 +13,7 @@ RUN pip install markupsafe
 RUN pip install flask-wtf
 RUN pip install email-validator
 RUN pip install Flask-Mail
+RUN pip install twilio
 
 WORKDIR /friendlify
 

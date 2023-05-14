@@ -6,7 +6,7 @@ from flask_restful import Api
 from flask_socketio import SocketIO
 from mail_config import mail
 from routes.auth import login, register, activate, logout
-from routes.home import home, get_post, handle_new_post, handle_new_comment, on_typing
+from routes.home import home, get_post, get_post_comments, handle_new_post, handle_new_comment, on_typing, on_stop_typing
 
 app = Flask(__name__)
 
@@ -45,6 +45,8 @@ app.route('/logout')(logout)
 app.route('/')(home)
 # Get User posts
 app.route('/get-posts/<int:page>', methods=['GET'])(get_post)
+# Get Post Comments
+app.route('/get-comments/<int:post_id>/<int:page>', methods=['GET'])(get_post_comments)
 # Handle New Post - Realtime
 socketio.on('new_post')(handle_new_post)
 # Handle New Comment - Realtime
@@ -52,7 +54,7 @@ socketio.on('new_comment')(handle_new_comment)
 # Check typing on Comment - Realtime
 socketio.on('typing')(on_typing)
 # Check stop typing on Comment - Realtime
-socketio.on('stop_typing')
+socketio.on('stop_typing')(on_stop_typing)
 
 
 if __name__ == '__main__':

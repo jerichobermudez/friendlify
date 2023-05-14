@@ -1,0 +1,14 @@
+{% for comment in comments %}
+  <div class="post-comment">
+    <img src="{{ url_for('static', filename='files/'~ comment.user.username ~ '/' ~ comment.user.image) }}" alt="" class="profile-photo-sm" />
+    <div class="user-comment-section">
+      <p>
+        <a href="{{ comment.user.username }}" class="profile-link">
+          {{ comment.user.display_name if comment.user.display_name else comment.user.firstname ~ ' ' ~ comment.user.lastname }}
+        </a>
+        <br>
+        {{ comment.comment }}
+      </p>
+    </div>
+  </div>
+{% endfor %}

@@ -125,7 +125,10 @@ section h2.sub-title{
   ==================================================*/
 
 .container{
-  max-width: 1050px;
+  padding-right: 10px;
+  padding-left: 10px;
+  margin-right: auto;
+  margin-left: auto;
 }
 
 section .wrapper{
@@ -1257,6 +1260,11 @@ ul.online-users li span.online-dot{
   position: relative;
 }
 
+.post-content .post-container .post-detail .comments-main-container{
+  margin-left: -10px !important;
+  position: relative;
+}
+
 .post-content .post-container .post-detail .post-text{
   line-height: 24px;
   margin: 0;
@@ -1270,7 +1278,11 @@ ul.online-users li span.online-dot{
 
 .post-content .post-container .post-detail .post-comment{
   display: inline-flex;
-  margin: 10px auto;
+  margin: 2px auto;
+  width: 100%;
+}
+
+.user-comment-section{
   width: 100%;
 }
 
@@ -2376,6 +2388,8 @@ ul.contact li i{
   .faq-cat-list.nav-tabs>li>a{min-width: 150px; padding: 30px 15px;}
   
   .error-page .error-content form .form-group{width: 80%;}
+
+  .friend-suggestions, .user-informations{ display: none;}
   
 }
 
@@ -2439,6 +2453,8 @@ ul.contact li i{
   .faq-cat-list.nav-tabs>li>a>i{font-size: 20px;}
   
   .error-page .error-content form .form-group{width: 100%;}
+
+  .friend-suggestions{ display: none;}
 
 }
 

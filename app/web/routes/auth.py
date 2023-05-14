@@ -6,6 +6,7 @@ from database import db
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired, BadSignature
 from flask import render_template, request, flash, session, redirect, url_for
 from forms.registration import RegistrationForm
+from forms.login import LoginForm
 from models.user import User
 from components.mail_helper import send_activation_email
 
@@ -15,27 +16,24 @@ def login():
     if 'id' in session and session['loggedIn'] == True:
         return redirect(url_for('home'))
 
+    form = LoginForm()
     if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
+        if form.validate_on_submit():
+            username = form.username.data
+            password = form.password.data
 
-        user = User.query.filter_by(username=username).first()
+            user = User.query.filter((User.username==username) | (User.email==username)).first()
 
-        if user is None:
-            flash('Invalid login credentials.', 'error')
-            return redirect(url_for('login'))
+            if user and user.check_password_hash(password):
+                session['loggedIn'] = True
+                session['id'] = user.id
+                session['username'] = user.username
 
-        if not user.check_password_hash(password):
-            flash('Invalid login credentials.', 'error')
-            return redirect(url_for('login'))
-        
-        session['loggedIn'] = True
-        session['id'] = user.id
-        session['username'] = user.username
+                return redirect(url_for('home'))
+            else:
+                flash('Invalid login credentials.', 'error')
 
-        return redirect(url_for('home'))
-
-    return render_template('auth/login.html')
+    return render_template('auth/login.html', form=form)
 
 def register():
     form = RegistrationForm()
