@@ -10,9 +10,11 @@ class ResetPasswordForm(FlaskForm):
         validators.Regexp(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$',
             message='Password must have at least one uppercase letter, one lowercase letter, one number, and one special character.'
         ),
+        EqualTo('confirm_password', message="Password doesn't match."),
         validators.NoneOf(values=COMMON_PASSWORDS, message='Please choose a stronger password.')
     ])
     confirm_password = PasswordField('Confirm Password', [
-        EqualTo('password', message="Password doesn't match.")
+        EqualTo('password', message="Password doesn't match."),
+        validators.DataRequired(),
     ])
     submit = SubmitField('Reset Password')

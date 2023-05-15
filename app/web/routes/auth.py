@@ -123,10 +123,8 @@ def forgotPassword():
                 html = render_template('mail/reset-password.html', name=user.firstname, link=activation_link)
                 sendMail('Reset Password', '', 'admin@friendlify.com', [user.email], html)
 
-            flash('Reset Password Success!', 'success')
+            flash('Password Reset Email Sent Successfully!', 'success')
             return redirect(url_for('forgotPassword'))
-        else:
-            flash('An error has occurred.', 'error')
 
     return render_template('auth/forgot-password.html', form=form)
 
@@ -153,8 +151,6 @@ def resetPassword(token):
                 
                 flash('Reset Password Success!', 'success')
                 return redirect(url_for('login'))
-            else:
-                flash('An error has occurred.', 'error')
                 
         return render_template('auth/reset-password.html', token=token, form=form)
     except SignatureExpired:
