@@ -3,12 +3,12 @@
   <div id="lp-register">
     <div class="container wrapper">
       <div class="row">
-        <div class="col-sm-5">
+        <div class="col-sm-6">
           <div class="intro-texts">
             <h1 class="text-white">Friendlify</h1>
           </div>
         </div>
-        <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-1">
+        <div class="col-xs-10 col-xs-offset-1 col-sm-5 col-sm-offset-1">
           <div class="reg-form-container"> 
           
             <!-- Register/Login Tabs-->
@@ -82,9 +82,6 @@
                   <div class="row">
                     <div class="form-group col-xs-12">
                       <label for="confirm_password" class="sr-only">Confirm Password</label>
-                      <!-- <input id="confirmPassword" class="form-control input-group-lg" type="password" name="confirmPassword" placeholder="Confirm Password"/> -->
-                      
-                      <!-- {{ form.confirm_password(class_='form-control input-group-lg', placeholder_='Firstname') }} -->
                       <input id="confirm_password" class="form-control {% if form.confirm_password.errors %} input-error {% endif %}" type="password" name="confirm_password" placeholder="Confirm Password"/>
                       {% for error in form.confirm_password.errors %}
                         <span class="text-danger">{{ error }}</span><br>
@@ -92,7 +89,7 @@
                     </div>
                   </div>
                   <!--Register Now Form Ends-->
-                  <button type="submit" class="btn btn-primary">Register Now</button>
+                  <button type="submit" class="btn btn-primary btn-block">Register Now</button>
                 </form>
               </div>
               <!--Registration Form Contents Ends-->

@@ -5,7 +5,7 @@ from flask import Flask, render_template
 from flask_restful import Api
 from flask_socketio import SocketIO
 from mail_config import mail
-from routes.auth import login, register, activate, logout
+from routes.auth import login, register, activate, forgotPassword, resetPassword, logout
 from routes.home import home, get_post, get_post_comments, handle_new_post, handle_new_comment, on_typing, on_stop_typing
 
 app = Flask(__name__)
@@ -38,6 +38,10 @@ app.route('/login', methods=['GET', 'POST'])(login)
 app.route('/register', methods=['GET', 'POST'])(register)
 # Activate
 app.route('/activate/<token>')(activate)
+# Forgot Password
+app.route('/forgot-password', methods=['GET', 'POST'])(forgotPassword)
+# Reset Password
+app.route('/reset-password/<token>', methods=['GET', 'POST'])(resetPassword)
 # Logout
 app.route('/logout')(logout)
 

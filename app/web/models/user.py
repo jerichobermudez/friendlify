@@ -15,7 +15,8 @@ class User(db.Model):
     birthday = db.Column(db.Date, nullable=True)
     image = db.Column(db.String(80), nullable=True, default='default.png')
     token = db.Column(db.String(120), nullable=True)
-    status = db.Column(db.String(120), nullable=False, default=0)
+    status = db.Column(db.String(120), nullable=True, default=0)
+    deleted = db.Column(db.Boolean, default=False)
 
 
     friends = db.relationship(
@@ -36,6 +37,9 @@ class User(db.Model):
 
     def check_password_hash(self, password):
         return check_password_hash(self.password, password)
+    
+    def update_password(self, new_password):
+        self.password = generate_password_hash(new_password)
 
     def to_dict(self):
         return {
@@ -46,4 +50,5 @@ class User(db.Model):
             'email': self.email,
             'password': self.password,
             'token': self.token,
+            'status': self.status,
         }

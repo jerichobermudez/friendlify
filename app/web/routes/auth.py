@@ -3,12 +3,15 @@ import os
 import shutil
 from config import ACTIVATION_EXPIRATION, SECRET_KEY, TOKEN
 from database import db
+from enums.UserStatus import UserStatus
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired, BadSignature
-from flask import render_template, request, flash, session, redirect, url_for
+from flask import render_template, request, flash, session, redirect, url_for, jsonify
 from forms.registration import RegistrationForm
 from forms.login import LoginForm
+from forms.forgot_password import ForgotPasswordForm
+from forms.reset_password import ResetPasswordForm
 from models.user import User
-from components.mail_helper import send_activation_email
+from components.mail_helper import sendMail
 
 token_serializer = URLSafeTimedSerializer(SECRET_KEY)
 
@@ -22,7 +25,11 @@ def login():
             username = form.username.data
             password = form.password.data
 
-            user = User.query.filter((User.username==username) | (User.email==username)).first()
+            user = User.query.filter(
+                (User.username == username) | (User.email == username),
+                User.status != UserStatus.DEFAULT.value,
+                User.deleted == 0
+            ).first()
 
             if user and user.check_password_hash(password):
                 session['loggedIn'] = True
@@ -59,38 +66,97 @@ def register():
 
             db.session.add(user)
             db.session.commit()
-            
+
             # Generate activation link with the token
             activation_link = url_for('activate', token=token, _external=True)
             html = render_template('mail/activation.html', link=activation_link)
-            # mail.send_message(
-            send_activation_email(
-                'Account Activation',
-                '',
-                'admin@friendlify.com',
-                [form.email.data],
-                html
-            )
+            sendMail('Account Activation', '', 'admin@friendlify.com', [form.email.data], html)
 
             flash('Registration success!', 'success')
             return redirect(url_for('register'))
         else:
             flash('An error has occurred.', 'error')
-    # Your home route logic here
+
     return render_template('auth/register.html', form=form)
 
 def activate(token):
     try:
         username = token_serializer.loads(token, salt=TOKEN, max_age=ACTIVATION_EXPIRATION)
-        user = User.query.filter_by(username=username, token=token, status=0).first()
+        user = User.query.filter(
+            User.username == username,
+            User.token == token,
+            User.status == UserStatus.DEFAULT.value
+        ).first()
 
         if not user:
             return redirect(url_for('login'))
 
-        user.status = 1
+        user.status = UserStatus.ACTIVATED.value
+        user.token = None
         db.session.commit()
 
         return render_template('auth/activated.html')
+    except SignatureExpired:
+        return render_template('error/404.html')
+    except BadSignature:
+        return render_template('error/404.html')
+
+def forgotPassword():
+    form = ForgotPasswordForm()
+
+    if request.method == 'POST':
+        if form.validate_on_submit():
+            user = User.query.filter(
+                User.email == form.email.data,
+                User.status != UserStatus.DEFAULT.value
+            ).first()
+
+            if user:
+                token = token_serializer.dumps(user.username, salt=TOKEN)
+
+                user.status = UserStatus.RESET_PASSWORD.value
+                user.token = token
+                db.session.commit()
+                
+                # Generate activation link with the token
+                activation_link = url_for('resetPassword', token=token, _external=True)
+                html = render_template('mail/reset-password.html', name=user.firstname, link=activation_link)
+                sendMail('Reset Password', '', 'admin@friendlify.com', [user.email], html)
+
+            flash('Reset Password Success!', 'success')
+            return redirect(url_for('forgotPassword'))
+        else:
+            flash('An error has occurred.', 'error')
+
+    return render_template('auth/forgot-password.html', form=form)
+
+def resetPassword(token):
+    try:
+        username = token_serializer.loads(token, salt=TOKEN, max_age=ACTIVATION_EXPIRATION)
+        user = User.query.filter(
+            User.username == username,
+            User.token == token,
+            User.status == UserStatus.RESET_PASSWORD.value
+        ).first()
+
+        if not user:
+            return redirect(url_for('login'))
+
+        form = ResetPasswordForm()
+
+        if request.method == 'POST':
+            if form.validate_on_submit():
+                user.update_password(form.password.data)
+                user.status = UserStatus.ACTIVATED.value
+                user.token = None
+                db.session.commit()
+                
+                flash('Reset Password Success!', 'success')
+                return redirect(url_for('login'))
+            else:
+                flash('An error has occurred.', 'error')
+                
+        return render_template('auth/reset-password.html', token=token, form=form)
     except SignatureExpired:
         return render_template('error/404.html')
     except BadSignature:

@@ -3,12 +3,12 @@
   <div id="lp-register">
     <div class="container wrapper">
       <div class="row">
-        <div class="col-sm-5">
+        <div class="col-sm-6">
           <div class="intro-texts">
             <h1 class="text-white">Friendlify</h1>
           </div>
         </div>
-        <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-1 text-center">
+        <div class="col-xs-10 col-xs-offset-1 col-sm-5 col-sm-offset-1 text-center">
           <div class="reg-form-container">
             <!-- Register/Login Tabs-->
             <div class="reg-options">
@@ -38,13 +38,24 @@
       var delay = 10000;
       var countdownElement = $("#countdown");
 
+      // Retrieve initial timestamp from local storage
+      var initialTimestamp = localStorage.getItem("countdownStart");
+      var remainingSeconds;
+
+      if (initialTimestamp) {
+        var elapsedTime = Date.now() - initialTimestamp;
+        remainingSeconds = Math.max(Math.ceil((delay - elapsedTime) / 1000), 0);
+      } else {
+        remainingSeconds = Math.ceil(delay / 1000);
+        localStorage.setItem("countdownStart", Date.now());
+      }
+
       // Update countdown display
       function updateCountdown(seconds) {
         countdownElement.text(seconds);
       }
 
       // Redirect after delay
-      var remainingSeconds = Math.ceil(delay / 1000);
       updateCountdown(remainingSeconds);
 
       var countdownInterval = setInterval(function() {
@@ -53,6 +64,7 @@
 
         if (remainingSeconds === 0) {
           clearInterval(countdownInterval);
+          localStorage.removeItem("countdownStart");
           window.location.href = "{{ url_for('login') }}";
         }
       }, 1000);
