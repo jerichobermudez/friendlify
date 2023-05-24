@@ -1,7 +1,7 @@
 import os
-# import secrets
 import shutil
-from config import ACTIVATION_EXPIRATION, SECRET_KEY, TOKEN
+from config import ACTIVATION_EXPIRATION
+from dotenv import load_dotenv
 from database import db
 from enums.UserStatus import UserStatus
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired, BadSignature
@@ -13,11 +13,13 @@ from forms.reset_password import ResetPasswordForm
 from models.user import User
 from components.mail_helper import sendMail
 
-token_serializer = URLSafeTimedSerializer(SECRET_KEY)
+load_dotenv()
+
+token_serializer = URLSafeTimedSerializer(os.getenv('SECRET_KEY'))
 
 def login():
-    if 'id' in session and session['loggedIn'] == True:
-        return redirect(url_for('home'))
+    # if 'id' in session and session['loggedIn'] == True:
+    #     return redirect(url_for('home'))
 
     form = LoginForm()
     if request.method == 'POST':
@@ -47,7 +49,7 @@ def register():
 
     if request.method == 'POST':
         if form.validate_on_submit():
-            token = token_serializer.dumps(form.username.data, salt=TOKEN)
+            token = token_serializer.dumps(form.username.data, salt=os.getenv('TOKEN'))
             user = User(
                 firstname=form.firstname.data,
                 lastname=form.lastname.data,
@@ -81,7 +83,7 @@ def register():
 
 def activate(token):
     try:
-        username = token_serializer.loads(token, salt=TOKEN, max_age=ACTIVATION_EXPIRATION)
+        username = token_serializer.loads(token, salt=os.getenv('TOKEN'), max_age=ACTIVATION_EXPIRATION)
         user = User.query.filter(
             User.username == username,
             User.token == token,
@@ -112,7 +114,7 @@ def forgotPassword():
             ).first()
 
             if user:
-                token = token_serializer.dumps(user.username, salt=TOKEN)
+                token = token_serializer.dumps(user.username, salt=os.getenv('TOKEN'))
 
                 user.status = UserStatus.RESET_PASSWORD.value
                 user.token = token
@@ -130,7 +132,7 @@ def forgotPassword():
 
 def resetPassword(token):
     try:
-        username = token_serializer.loads(token, salt=TOKEN, max_age=ACTIVATION_EXPIRATION)
+        username = token_serializer.loads(token, salt=os.getenv('TOKEN'), max_age=ACTIVATION_EXPIRATION)
         user = User.query.filter(
             User.username == username,
             User.token == token,

@@ -8,3 +8,4 @@ docker-compose.yml
 /app/web/static/files/*
 web/static/files
 web/static/files/*
+/app/web/.env

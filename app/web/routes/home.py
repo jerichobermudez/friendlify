@@ -1,4 +1,4 @@
-from config import POST_PER_PAGE, COMMENTS_PER_POST, TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, TWILIO_PHONE_NUMBER
+from config import POST_PER_PAGE, COMMENTS_PER_POST
 from database import db
 from flask import redirect, render_template, session, url_for, jsonify
 from models.friend import Friend
@@ -12,12 +12,12 @@ from sqlalchemy.orm import joinedload
 
 # Homepage
 def home():
-    if 'id' in session and session['loggedIn'] == True:
+    # if 'id' in session and session['loggedIn'] == True:
         user = User.query.filter_by(id=session['id']).first()
 
         return render_template('home/index.html', user=user)
-    else:
-        return redirect(url_for('login'))
+    # else:
+    #     return redirect(url_for('login'))
 
 # Get Posts
 def get_post(page):

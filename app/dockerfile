@@ -14,6 +14,8 @@ RUN pip install flask-wtf
 RUN pip install email-validator
 RUN pip install Flask-Mail
 RUN pip install twilio
+RUN pip install pymongo
+RUN pip install python-dotenv
 
 WORKDIR /friendlify
 

@@ -1,7 +1,8 @@
-from config import DB_HOST, DB_PORT, DB_DATABASE, DB_USERNAME, DB_PASSWORD, SECRET_KEY, TOKEN
+import os
 from database import db
+from dotenv import load_dotenv
 from flask_mail import Mail
-from flask import Flask, render_template
+from flask import Flask, render_template, session, redirect, request, url_for
 from flask_restful import Api
 from flask_socketio import SocketIO
 from mail_config import mail
@@ -9,16 +10,17 @@ from routes.auth import login, register, activate, forgotPassword, resetPassword
 from routes.home import home, get_post, get_post_comments, handle_new_post, handle_new_comment, on_typing, on_stop_typing
 
 app = Flask(__name__)
+load_dotenv()
 
-app.config['SQLALCHEMY_DATABASE_URI'] = f"mysql+pymysql://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_DATABASE}"
+app.config['SQLALCHEMY_DATABASE_URI'] = f"mysql+pymysql://{os.getenv('DB_USERNAME')}:{os.getenv('DB_PASSWORD')}@{os.getenv('DB_HOST')}:{os.getenv('DB_PORT')}/{os.getenv('DB_DATABASE')}"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.secret_key = SECRET_KEY
-app.token = TOKEN
+app.secret_key = os.getenv('SECRET_KEY')
+app.token = os.getenv('TOKEN')
 
-app.config['MAIL_SERVER']='smtp.gmail.com'
-app.config['MAIL_PORT'] = 465 #465 - if SSL=True | 587 - if TLS=True
-app.config['MAIL_USERNAME'] = 'jerichoramosbermudez@gmail.com'
-app.config['MAIL_PASSWORD'] = 'qflozdvylkobugca'
+app.config['MAIL_SERVER'] = os.getenv('MAIL_SERVER')
+app.config['MAIL_PORT'] = os.getenv('MAIL_PORT')
+app.config['MAIL_USERNAME'] = os.getenv('MAIL_USERNAME')
+app.config['MAIL_PASSWORD'] = os.getenv('MAIL_PASSWORD')
 app.config['MAIL_USE_TLS'] = False
 app.config['MAIL_USE_SSL'] = True
 mail = Mail()
@@ -27,6 +29,18 @@ api = Api(app)
 db.init_app(app)
 mail.init_app(app)
 socketio = SocketIO(app)
+
+@app.before_request
+def before_request():
+    authRoutes = ['login', 'register', 'activate', 'forgotPassword', 'resetPassword']
+    sessionRoutes = ['home']
+    if 'id' not in session:
+        if request.endpoint in sessionRoutes:
+            return redirect(url_for('login'))
+    
+    if 'id' in session:
+        if request.endpoint in authRoutes:
+            return redirect(url_for('home'))
 
 @app.errorhandler(404)
 def page_not_found(e):
